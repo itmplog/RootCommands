@@ -1,25 +1,21 @@
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 dependencies {
     compile project(':libraries:RootCommands')
 }
 
 android {
-    compileSdkVersion 17
-    buildToolsVersion "17.0.0"
+    compileSdkVersion 23
+    buildToolsVersion "23.0.2"
 
     defaultConfig {
         minSdkVersion 7
-        targetSdkVersion 17
-    }
-}
+        targetSdkVersion 23
 
-/**
- * Android Gradle Plugin 0.4 does not support library packaging.
- * This is a hack from https://groups.google.com/d/msg/adt-dev/Dkf9nsZlq8I/3gtG1Ofu1zAJ
- */
-tasks.withType(com.android.build.gradle.tasks.PackageApplication) { pkgTask ->
-    pkgTask.jniDir new File(projectDir, 'libs')
+	sourceSets.main {
+ 		jni.srcDirs = []
+    	jniLibs.srcDir 'libs'
+}   }
 }
 
 /**
@@ -38,5 +34,11 @@ task renameExecutables(type: Copy) {
     rename(/(.+)/, 'lib$1_exec.so')
 }
 
+task ndkBuild(type: Exec) {
+    commandLine 'ndk-build', '-j4'
+}
 
-build.dependsOn renameExecutables
+renameExecutables.dependsOn(ndkBuild)
+tasks.withType(JavaCompile) {
+    compileTask -> compileTask.dependsOn renameExecutables
+}
