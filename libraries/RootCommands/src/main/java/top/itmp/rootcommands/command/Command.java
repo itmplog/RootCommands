@@ -108,13 +108,11 @@ public abstract class Command {
         Log.d(RootCommands.TAG, "Command " + id + " finished.");
     }
 
-    public void setExitCode(int code) {
-        synchronized (this) {
+    public synchronized void setExitCode(int code) {
             exitCode = code;
             finished = true;
             commandFinished(id);
             this.notifyAll();
-        }
     }
 
     /**
@@ -143,8 +141,7 @@ public abstract class Command {
      * @throws TimeoutException
      * @throws BrokenBusyboxException
      */
-    public void waitForFinish() throws TimeoutException, BrokenBusyboxException {
-        synchronized (this) {
+    public synchronized void waitForFinish() throws TimeoutException, BrokenBusyboxException {
             while (!finished) {
                 try {
                     this.wait(timeout);
@@ -162,9 +159,7 @@ public abstract class Command {
             if (brokenBusyboxDetected) {
                 throw new BrokenBusyboxException();
             }
-
             processAfterExecution(exitCode);
-        }
     }
 
 }
