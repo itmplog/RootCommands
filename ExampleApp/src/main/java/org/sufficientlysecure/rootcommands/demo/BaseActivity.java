@@ -24,17 +24,24 @@ import org.sufficientlysecure.rootcommands.command.SimpleExecutableCommand;
 import org.sufficientlysecure.rootcommands.command.SimpleCommand;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
 public class BaseActivity extends Activity {
     public static final String TAG = "Demo";
+    AlertDialog.Builder builder;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+        builder = new AlertDialog.Builder(this)
+                .setIcon(R.drawable.ic_launcher)
+                .setPositiveButton(android.R.string.ok, null)
+                .setNegativeButton(android.R.string.cancel, null);
 
         // enable debug logging
         RootCommands.DEBUG = true;
@@ -84,6 +91,12 @@ public class BaseActivity extends Activity {
             Log.d(TAG, "Output of command2: " + command2.getOutput());
             Log.d(TAG, "Exit code of command2: " + command2.getExitCode());
 
+            builder.setTitle("Command Test")
+                    .setMessage("command0: " + command0.getOutput()
+                            + "\ncommand1: " + command1.getOutput()
+                            + "\ncommand2: " + command2.getOutput());
+            builder.create()
+                    .show();
             // custom command classes:
             MyCommand myCommand = new MyCommand();
             shell.add(myCommand).waitForFinish();
@@ -111,6 +124,11 @@ public class BaseActivity extends Activity {
 
             Log.d(TAG, tb.getFilePermissions("/system/etc/hosts"));
 
+            builder.setTitle("Toolbox Test")
+                    .setMessage(tb.isRootAccessGiven() ? "Root access given!\n" + tb.getFilePermissions("/system/etc/hosts") : "No root access!" );
+            builder.create()
+                    .show();
+
             shell.close();
         } catch (Exception e) {
             Log.e(TAG, "Exception!", e);
@@ -119,7 +137,15 @@ public class BaseActivity extends Activity {
 
     public void binariesTestOnClick(View view) {
         try {
-            SimpleExecutableCommand binaryCommand = new SimpleExecutableCommand(this, "hello_world", "");
+            SimpleExecutableCommand binaryCommand;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+                // Run the file which was created using APP_PLATFORM := android-16
+                binaryCommand = new SimpleExecutableCommand(this, "hello_world", "");
+                } else {
+                // Run the file which was created using APP_PLATFORM := android-9
+                binaryCommand = new SimpleExecutableCommand(this, "hello_world_nopie", "");
+                }
+            //SimpleExecutableCommand binaryCommand = new SimpleExecutableCommand(this, "hello_world", "");
 
             // started as normal shell without root, but you can also start your binaries on a root
             // shell if you need more privileges!
@@ -127,6 +153,10 @@ public class BaseActivity extends Activity {
 
             shell.add(binaryCommand).waitForFinish();
 
+            Log.v("binaryCommand", binaryCommand.getOutput() + " ");
+            builder.setTitle("Binaries Test")
+                    .setMessage(binaryCommand.getOutput());
+            builder.create().show();
             Toolbox tb = new Toolbox(shell);
             if (tb.killAllExecutable("hello_world")) {
                 Log.d(TAG, "Hello World daemon killed!");

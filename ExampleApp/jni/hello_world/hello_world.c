@@ -13,7 +13,10 @@ char str[10];
     if(getppid()==1) return; /* already a daemon */
     i=fork();
     if (i<0) exit(1); /* fork error */
-    if (i>0) exit(0); /* parent exits */
+    if (i>0) {
+	    printf("child is running with pid: %d\n", i);
+	    exit(0); /* parent exits */
+    }
     /* child (daemon) continues */
     setsid(); /* obtain a new process group */
 }
