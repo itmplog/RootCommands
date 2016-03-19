@@ -27,12 +27,23 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.ScrollView;
+import android.widget.TextView;
+
+import java.io.IOException;
+import java.util.concurrent.TimeoutException;
 
 public class BaseActivity extends Activity {
     public static final String TAG = "Demo";
     AlertDialog.Builder builder;
+
+    private ScrollView scrollView;
+    private TextView textView;
+    private EditText editText;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,6 +56,12 @@ public class BaseActivity extends Activity {
 
         // enable debug logging
         RootCommands.DEBUG = true;
+
+        textView = (TextView)findViewById(R.id.textView);
+        textView.setMovementMethod(new ScrollingMovementMethod());
+        editText = (EditText)findViewById(R.id.editText);
+
+        scrollView = (ScrollView)findViewById(R.id.scrollView);
     }
 
     private class MyCommand extends Command {
@@ -170,4 +187,60 @@ public class BaseActivity extends Activity {
         }
     }
 
+    public void execCommand(View view){
+        String commands;
+
+        if((commands = editText.getText().toString()).length() <= 0){
+            textView.setText("Plz input the system command you want to exec;");
+            return;
+        }
+        try {
+            Shell shell = Shell.startShell();
+            SimpleCommand simpleCommand = new SimpleCommand(commands);
+            shell.add(simpleCommand).waitForFinish();
+
+            textView.setText(simpleCommand.getOutput());
+
+            scrollView.post(new Runnable() {
+                @Override
+                public void run() {
+                    scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                }
+            });
+            shell.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }catch (TimeoutException e){
+            Log.v("ExecCommand", "timeout");
+            e.printStackTrace();
+        }
+    }
+    public void execAsRoot(View view){
+        String commands;
+
+        if((commands = editText.getText().toString()).length() <= 0){
+            textView.setText("Plz input the system command you want to exec;");
+            return;
+        }
+        try {
+            Shell shell = Shell.startRootShell();
+            SimpleCommand simpleCommand = new SimpleCommand(commands);
+            shell.add(simpleCommand).waitForFinish();
+
+            textView.setText(simpleCommand.getOutput());
+
+            scrollView.post(new Runnable() {
+                @Override
+                public void run() {
+                    scrollView.fullScroll(ScrollView.FOCUS_DOWN);
+                }
+            });
+            shell.close();
+        }catch (IOException e){
+            e.printStackTrace();
+        }catch (TimeoutException e){
+            Log.v("ExecCommand", "timeout");
+            e.printStackTrace();
+        }
+    }
 }

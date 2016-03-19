@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:weightSum="1">
 
     <TextView
         android:id="@+id/textView1"
@@ -30,5 +31,44 @@
         android:layout_height="wrap_content"
         android:onClick="binariesTestOnClick"
         android:text="Binaries Test" />
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/editText" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/exec_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="execCommand"
+            android:text="Exec Command"
+            android:layout_weight="1"/>
+        <View
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+        <Button
+            android:id="@+id/exec_as_root"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="execAsRoot"
+            android:text="Exec As Root"
+            android:layout_weight="1"/>
+    </LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView"/>
+    </ScrollView>
 
 </LinearLayout>
