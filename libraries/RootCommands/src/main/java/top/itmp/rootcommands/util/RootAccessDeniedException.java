@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.sufficientlysecure.rootcommands.util;
+package top.itmp.rootcommands.util;
 
 import java.io.IOException;
 

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.sufficientlysecure.rootcommands;
+package top.itmp.rootcommands;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -25,11 +25,11 @@ import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.sufficientlysecure.rootcommands.command.ExecutableCommand;
-import org.sufficientlysecure.rootcommands.command.Command;
-import org.sufficientlysecure.rootcommands.command.SimpleCommand;
-import org.sufficientlysecure.rootcommands.util.BrokenBusyboxException;
-import org.sufficientlysecure.rootcommands.util.Log;
+import top.itmp.rootcommands.command.ExecutableCommand;
+import top.itmp.rootcommands.command.Command;
+import top.itmp.rootcommands.command.SimpleCommand;
+import top.itmp.rootcommands.util.BrokenBusyboxException;
+import top.itmp.rootcommands.util.Log;
 
 import android.os.StatFs;
 import android.os.SystemClock;

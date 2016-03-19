@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-package org.sufficientlysecure.rootcommands.util;
+package top.itmp.rootcommands.util;
 
-import org.sufficientlysecure.rootcommands.RootCommands;
+import top.itmp.rootcommands.RootCommands;
 
 /**
  * Wraps Android Logging to enable or disable debug output using Constants

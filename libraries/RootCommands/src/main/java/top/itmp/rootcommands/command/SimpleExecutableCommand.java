@@ -14,17 +14,32 @@
  * limitations under the License.
  */
 
-package org.sufficientlysecure.rootcommands.util;
+package top.itmp.rootcommands.command;
 
-public class UnsupportedArchitectureException extends Exception {
-    private static final long serialVersionUID = 7826528799780001655L;
+import android.content.Context;
 
-    public UnsupportedArchitectureException() {
-        super();
+public class SimpleExecutableCommand extends ExecutableCommand {
+    private StringBuilder sb = new StringBuilder();
+
+    public SimpleExecutableCommand(Context context, String executableName, String parameters) {
+        super(context, executableName, parameters);
     }
 
-    public UnsupportedArchitectureException(String detailMessage) {
-        super(detailMessage);
+    @Override
+    public void output(int id, String line) {
+        sb.append(line).append('\n');
+    }
+
+    @Override
+    public void afterExecution(int id, int exitCode) {
+    }
+
+    public String getOutput() {
+        return sb.toString();
+    }
+
+    public int getExitCode() {
+        return exitCode;
     }
 
 }

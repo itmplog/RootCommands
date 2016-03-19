@@ -14,15 +14,13 @@
  * limitations under the License.
  */
 
-package org.sufficientlysecure.rootcommands.command;
+package top.itmp.rootcommands.command;
 
-import android.content.Context;
-
-public class SimpleExecutableCommand extends ExecutableCommand {
+public class SimpleCommand extends Command {
     private StringBuilder sb = new StringBuilder();
 
-    public SimpleExecutableCommand(Context context, String executableName, String parameters) {
-        super(context, executableName, parameters);
+    public SimpleCommand(String... command) {
+        super(command);
     }
 
     @Override

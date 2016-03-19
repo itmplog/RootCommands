@@ -14,30 +14,19 @@
  * limitations under the License.
  */
 
-package org.sufficientlysecure.rootcommands.command;
+package top.itmp.rootcommands.util;
 
-public class SimpleCommand extends Command {
-    private StringBuilder sb = new StringBuilder();
+import java.io.IOException;
 
-    public SimpleCommand(String... command) {
-        super(command);
+public class BrokenBusyboxException extends IOException {
+    private static final long serialVersionUID = 8337358201589488409L;
+
+    public BrokenBusyboxException() {
+        super();
     }
 
-    @Override
-    public void output(int id, String line) {
-        sb.append(line).append('\n');
-    }
-
-    @Override
-    public void afterExecution(int id, int exitCode) {
-    }
-
-    public String getOutput() {
-        return sb.toString();
-    }
-
-    public int getExitCode() {
-        return exitCode;
+    public BrokenBusyboxException(String detailMessage) {
+        super(detailMessage);
     }
 
 }

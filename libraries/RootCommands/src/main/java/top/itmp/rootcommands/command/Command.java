@@ -15,16 +15,16 @@
  * limitations under the License.
  */
 
-package org.sufficientlysecure.rootcommands.command;
+package top.itmp.rootcommands.command;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.concurrent.TimeoutException;
 
-import org.sufficientlysecure.rootcommands.RootCommands;
-import org.sufficientlysecure.rootcommands.Shell;
-import org.sufficientlysecure.rootcommands.util.BrokenBusyboxException;
-import org.sufficientlysecure.rootcommands.util.Log;
+import top.itmp.rootcommands.RootCommands;
+import top.itmp.rootcommands.Shell;
+import top.itmp.rootcommands.util.BrokenBusyboxException;
+import top.itmp.rootcommands.util.Log;
 
 public abstract class Command {
     final String command[];

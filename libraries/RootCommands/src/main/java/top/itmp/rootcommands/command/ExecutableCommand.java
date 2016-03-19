@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package org.sufficientlysecure.rootcommands.command;
+package top.itmp.rootcommands.command;
 
 import java.io.File;
 

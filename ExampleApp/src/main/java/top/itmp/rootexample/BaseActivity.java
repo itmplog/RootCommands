@@ -16,12 +16,12 @@
 
 package top.itmp.rootexample;
 
-import org.sufficientlysecure.rootcommands.RootCommands;
-import org.sufficientlysecure.rootcommands.Shell;
-import org.sufficientlysecure.rootcommands.Toolbox;
-import org.sufficientlysecure.rootcommands.command.Command;
-import org.sufficientlysecure.rootcommands.command.SimpleExecutableCommand;
-import org.sufficientlysecure.rootcommands.command.SimpleCommand;
+import top.itmp.rootcommands.RootCommands;
+import top.itmp.rootcommands.Shell;
+import top.itmp.rootcommands.Toolbox;
+import top.itmp.rootcommands.command.Command;
+import top.itmp.rootcommands.command.SimpleExecutableCommand;
+import top.itmp.rootcommands.command.SimpleCommand;
 
 import android.app.Activity;
 import android.app.AlertDialog;
