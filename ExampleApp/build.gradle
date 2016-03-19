@@ -38,7 +38,7 @@ task ndkBuild(type: Exec) {
     commandLine 'ndk-build', '-j4'
 }
 
-renameExecutables.dependsOn(ndkBuild)
+//renameExecutables.dependsOn(ndkBuild)
 tasks.withType(JavaCompile) {
     compileTask -> compileTask.dependsOn renameExecutables
 }
