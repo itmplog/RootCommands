@@ -10,13 +10,13 @@ android {
 
     defaultConfig {
         minSdkVersion 7
-        targetSdkVersion 23
+            targetSdkVersion 23
 
-	sourceSets.main {
- 		jni.srcDirs = []
-    	jniLibs.srcDir 'libs'
-}   }
-}
+            sourceSets.main {
+                jni.srcDirs = []
+                    jniLibs.srcDir 'libs'
+            }
+    }
 
 /**
  * Task to rename executables from hello_world to libhello_world_exec.so
@@ -24,21 +24,41 @@ android {
  *
  * http://www.gradle.org/docs/current/userguide/working_with_files.html
  */
-task renameExecutables(type: Copy) {
-    from 'libs'
-    into 'libs'
-    include '**/*'
-    exclude '**/*.so'
-    exclude '**/*.jar'
+    task renameExecutables(type: Copy) {
+        from 'libs'
+        into 'libs'
+        include '**/*'
+        exclude '**/*.so'
+        exclude '**/*.jar'
 
-    rename(/(.+)/, 'lib$1_exec.so')
+        rename(/(.+)/, 'lib$1_exec.so')
+    }
+
+    task ndkBuild(type: Exec) {
+        commandLine 'ndk-build', '-j4'
+    }
+
+    //renameExecutables.dependsOn(ndkBuild)
+    tasks.withType(JavaCompile) {
+        compileTask -> compileTask.dependsOn buildNative, renameExecutables
+    }
+
+	task buildNative(type: Exec, description: 'Compile JNI source via NDK') {
+        def ndkDir = android.ndkDirectory
+        commandLine "ndk-build",
+                '-C', file('jni').absolutePath, // Change src/main/jni the relative path to your jni source
+                '-j', Runtime.runtime.availableProcessors()
+                //'all',
+                //'NDK_DEBUG=1'
+	}
+
+	  task cleanNative(type: Exec, description: 'Clean JNI object files') {
+        def ndkDir = android.ndkDirectory
+        commandLine "ndk-build",
+                '-C', file('jni').absolutePath, // Change src/main/jni the relative path to your jni source
+                'clean'
+    }
+
+	clean.dependsOn 'cleanNative'
 }
 
-task ndkBuild(type: Exec) {
-    commandLine 'ndk-build', '-j4'
-}
-
-//renameExecutables.dependsOn(ndkBuild)
-tasks.withType(JavaCompile) {
-    compileTask -> compileTask.dependsOn renameExecutables
-}
